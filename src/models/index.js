@@ -7,7 +7,7 @@ let dbConnection = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.
 dbConnection
   .authenticate()
   .then(() => {
-    console.log('Database connection success.')
+    console.log('✅ Database connection established successfully.')
   })
   .catch((err) => {
     console.log('Failed to connect to the database: ' + err.message)
@@ -18,7 +18,7 @@ let syncDB = () => {
   dbConnection
     .sync({ alter: true, force: false })
     .then(() => {
-      console.log('Database successfully synced.')
+      console.log('✅ Database synchronized successfully')
     })
     .catch((err) => {
       console.log('Failed to sync db: ' + err.message)

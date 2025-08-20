@@ -36,7 +36,7 @@ function onError(error) {
 function onListening() {
   let addr = httpServer.address()
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`
-  console.log(`Listening on ${bind}`)
+  console.log(`🚀 Server is running on ${bind}`)
   // syncDB()
 }
 
