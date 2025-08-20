@@ -29,8 +29,8 @@ exports.getCompanyById = async (companyId) => {
   }
 }
 
-exports.createCompany = async (body) => {
-  const { name, industry, website, phone, address } = body
+exports.createCompany = async (body, transaction) => {
+  const { name, industry, website, phone, address, contactData } = body
 
   const existingCompany = await company.findOne({ where: { name } })
   if (existingCompany) {
@@ -43,7 +43,15 @@ exports.createCompany = async (body) => {
     phone,
     address,
   }
-  await company.create(companyPayload)
+  const createdCompany = await company.create(companyPayload, { transaction })
+  if (Array.isArray(contactData) && contactData.length > 0) {
+    const contactsToInsert = contactData.map((contactItem) => ({
+      ...contactItem,
+      companyId: createdCompany.id,
+    }))
+
+    await contact.bulkCreate(contactsToInsert, { transaction })
+  }
   return {
     message: responseMessage('success', 'created', 'Company'),
   }

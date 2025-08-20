@@ -1,6 +1,6 @@
 const services = require('../../services')
 const { sendSuccess } = require('../../middleware/apiError')
-const { apiHandler } = require('../../middleware/globalErrorHandler')
+const { apiHandler, apiHandlerWithTransaction } = require('../../middleware/globalErrorHandler')
 
 exports.getCompanies = apiHandler(async (req, res) => {
   const result = await services.companyService.getCompanies(req.query)
@@ -13,6 +13,8 @@ exports.getCompanyById = apiHandler(async (req, res) => {
 })
 
 exports.createCompany = apiHandler(async (req, res) => {
-  const result = await services.companyService.createCompany(req.body)
+  const result = await apiHandlerWithTransaction(async (transaction) => {
+    return await services.companyService.createCompany(req.body, transaction)
+  })
   sendSuccess({ res, ...result })
 })
