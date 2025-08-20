@@ -31,6 +31,11 @@ exports.getCompanyById = async (companyId) => {
 
 exports.createCompany = async (body) => {
   const { name, industry, website, phone, address } = body
+
+  const existingCompany = await company.findOne({ where: { name } })
+  if (existingCompany) {
+    return sendAPIerror(statusCode.CONFLICT, responseMessage('already_exists', 'Company name'))
+  }
   const companyPayload = {
     name,
     industry,

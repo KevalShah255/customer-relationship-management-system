@@ -35,6 +35,11 @@ exports.getContactById = async (companyId) => {
 
 exports.createContact = async (body) => {
   const { firstName, lastName, email, phoneNumber, title, companyId } = body
+
+  const existingContact = await contact.findOne({ where: { email } })
+  if (existingContact) {
+    return sendAPIerror(statusCode.CONFLICT, responseMessage('already_exists', 'Contact email'))
+  }
   const contactPayload = {
     firstName,
     lastName,

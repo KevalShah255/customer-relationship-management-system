@@ -4,6 +4,7 @@ exports.responseMessage = (status, action = '', module = 'Data') => {
     success: `${module} ${action} successfully`,
     wrong: 'Something went wrong.',
     not_found: `No such ${action} exists`,
+    already_exists: `${action} already exists`,
   }
   return messages[status] || status || 'No message'
 }
