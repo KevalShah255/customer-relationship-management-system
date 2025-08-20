@@ -1,5 +1,5 @@
 const { sendAPIerror } = require('../../middleware/apiError')
-const { company } = require('../../models')
+const { company, contact } = require('../../models')
 const { responseMessage } = require('../../utils/responseMessage')
 const statusCode = require('../../utils/statusCode')
 const { getPagination, generatePaginatedResponse } = require('../../helper/common')
@@ -18,6 +18,7 @@ exports.getCompanies = async (queryParams) => {
 exports.getCompanyById = async (companyId) => {
   const companyData = await company.findOne({
     where: { id: companyId },
+    include: [{ model: contact }],
   })
   if (!companyData) {
     return sendAPIerror(statusCode.NOTFOUND, responseMessage('not_found', 'Company'))
